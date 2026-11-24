@@ -22,9 +22,56 @@ logic_gates.v	Logic-gate RTL
 logic_gates_tb.v	All input combinations and VCD generation
  # Verilog  Program
 
+```
+module basic_gates (
+    input  wire a,
+    input  wire b,
+    output wire y_and,
+    output wire y_or,
+    output wire y_not
+);
+
+    assign y_and = a & b;   // AND gate
+    assign y_or  = a | b;   // OR gate
+    assign y_not = ~a;      // NOT gate (inverter)
+
+endmodule 
+
+```
+
 # **Test Bench Program**
 
+```
+module tb2;
+    reg a, b;
+    wire y_and, y_or, y_not;
 
+    // Instantiate the design under test
+    basic_gates uut (
+        .a(a),
+        .b(b),
+        .y_and(y_and),
+        .y_or(y_or),
+        .y_not(y_not)
+    );
+
+    initial begin
+        $dumpfile("basic_gates.vcd");
+        $dumpvars(0, tb2);
+
+        $monitor("Time=%0t a=%b b=%b | AND=%b OR=%b NOT(a)=%b",
+                  $time, a, b, y_and, y_or, y_not);
+
+        a = 0; b = 0; #10;
+        a = 0; b = 1; #10;
+        a = 1; b = 0; #10;
+        a = 1; b = 1; #10;
+
+        $finish;
+    end
+endmodule 
+
+```
 
 
  
@@ -79,6 +126,8 @@ The design was compiled and simulated using Synopsys VCS, and the functionality 
 Output
 # OUTPUT
 
+
+<img width="1917" height="1077" alt="Screenshot 2026-11-24 091830" src="https://github.com/user-attachments/assets/ae6a17f1-fa0a-473b-9d41-384cdd3ebbcd" />
 
  
 # Viva-Voce Questions
